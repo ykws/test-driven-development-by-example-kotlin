@@ -6,6 +6,7 @@ import org.junit.Before
 
 import org.junit.Assert.*
 import org.junit.Test
+import java.lang.IllegalArgumentException
 
 class InputCheckerTest {
   lateinit var target: InputChecker
@@ -23,6 +24,11 @@ class InputCheckerTest {
   fun isValid() {
     val actual = target.isValid("foo")
     assertThat(actual, `is`(true))
+  }
+
+  @Test(expected = IllegalArgumentException::class)
+  fun isValid_givenNull_throwsIllegalArgumentException() {
+    target.isValid(null)
   }
 
   @Test
