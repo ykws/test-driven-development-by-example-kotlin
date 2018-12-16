@@ -38,8 +38,26 @@ class InputCheckerTest {
   }
 
   @Test
-  fun isValid_givenAlphaNumeric_returensTrue() {
+  fun isValid_givenAlphabetic_returnsTrue() {
+    val actual = target.isValid("abc")
+    assertThat(actual, `is`(true))
+  }
+
+  @Test
+  fun isValid_givenNumeric_returnsTrue() {
+    val actual = target.isValid("123")
+    assertThat(actual, `is`(true))
+  }
+
+  @Test
+  fun isValid_givenAlphaNumeric_returnsTrue() {
     val actual = target.isValid("abc123")
     assertThat(actual, `is`(true))
+  }
+
+  @Test
+  fun isValid_givenInvalidCharacter_returnsFalse() {
+    val actual = target.isValid("abc@123")
+    assertThat(actual, `is`(false))
   }
 }
