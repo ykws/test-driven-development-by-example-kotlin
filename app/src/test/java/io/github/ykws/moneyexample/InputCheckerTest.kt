@@ -1,6 +1,6 @@
 package io.github.ykws.moneyexample
 
-import org.hamcrest.CoreMatchers.`is`
+import org.assertj.core.api.Assertions.*
 import org.junit.After
 import org.junit.Before
 
@@ -23,7 +23,7 @@ class InputCheckerTest {
   @Test
   fun isValid() {
     val actual = target.isValid("foo")
-    assertThat(actual, `is`(true))
+    assertThat(actual).isTrue()
   }
 
   @Test(expected = IllegalArgumentException::class)
@@ -34,30 +34,30 @@ class InputCheckerTest {
   @Test
   fun isValid_givenLessThan3_returnsFalse() {
     val actual = target.isValid("ab")
-    assertThat(actual, `is`(false))
+    assertThat(actual).isFalse()
   }
 
   @Test
   fun isValid_givenAlphabetic_returnsTrue() {
     val actual = target.isValid("abc")
-    assertThat(actual, `is`(true))
+    assertThat(actual).isTrue()
   }
 
   @Test
   fun isValid_givenNumeric_returnsTrue() {
     val actual = target.isValid("123")
-    assertThat(actual, `is`(true))
+    assertThat(actual).isTrue()
   }
 
   @Test
   fun isValid_givenAlphaNumeric_returnsTrue() {
     val actual = target.isValid("abc123")
-    assertThat(actual, `is`(true))
+    assertThat(actual).isTrue()
   }
 
   @Test
   fun isValid_givenInvalidCharacter_returnsFalse() {
     val actual = target.isValid("abc@123")
-    assertThat(actual, `is`(false))
+    assertThat(actual).isFalse()
   }
 }
