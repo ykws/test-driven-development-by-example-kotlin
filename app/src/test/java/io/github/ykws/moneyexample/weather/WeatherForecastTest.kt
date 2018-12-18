@@ -10,6 +10,7 @@ import org.junit.Test
 class WeatherForecastTest {
   lateinit var satellite: Satellite
   lateinit var weatherForecast: WeatherForecast
+  lateinit var recorder: WeatherRecorder
 
   @Before
   fun setUp() {
@@ -25,7 +26,8 @@ class WeatherForecastTest {
       }
     }
 
-    val recorder = WeatherRecorder()
+    recorder = mock(name = "MockRecorder")
+
     val formatter = WeatherFormatter()
     weatherForecast = WeatherForecast(satellite, recorder, formatter)
   }
@@ -44,5 +46,11 @@ class WeatherForecastTest {
   fun shouldBringUmbrella_givenBurlingame_returnTrue() {
     val actual = weatherForecast.shouldBringUmbrella(37.580006, -122.345106)
     assertThat(actual).isTrue()
+  }
+
+  @Test
+  fun recordCurrentWeather_assertRecorderCalled() {
+    weatherForecast.recordCurrentWeather(37.580006, -122.345106)
+    verify(recorder, times(1)).record(any())
   }
 }
