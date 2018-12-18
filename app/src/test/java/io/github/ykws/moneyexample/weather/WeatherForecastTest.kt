@@ -14,7 +14,16 @@ class WeatherForecastTest {
   @Before
   fun setUp() {
     satellite = mock(name = "MockSatellite")
-    whenever(satellite.getWeather()).thenReturn(Weather.SUNNY)
+    whenever(satellite.getWeather(any(), any())).thenAnswer { invocation ->
+      val latitude = invocation.arguments[0] as Double
+      val longitude = invocation.arguments[1] as Double
+
+      if (latitude in 20.424086..45.550999 && longitude in 122.933872..153.980789) {
+        return@thenAnswer Weather.SUNNY
+      } else {
+        return@thenAnswer Weather.RAINY
+      }
+    }
 
     val recorder = WeatherRecorder()
     val formatter = WeatherFormatter()
@@ -26,8 +35,14 @@ class WeatherForecastTest {
   }
 
   @Test
-  fun shouldBringUmbrella_givenSunny_returnsFalse() {
-    val actual = weatherForecast.shouldBringUmbrella()
+  fun shouldBringUmbrella_givenInJapan_returnsFalse() {
+    val actual = weatherForecast.shouldBringUmbrella(35.669784, 139.817728)
     assertThat(actual).isFalse()
+  }
+
+  @Test
+  fun shouldBringUmbrella_givenBurlingame_returnTrue() {
+    val actual = weatherForecast.shouldBringUmbrella(37.580006, -122.345106)
+    assertThat(actual).isTrue()
   }
 }
