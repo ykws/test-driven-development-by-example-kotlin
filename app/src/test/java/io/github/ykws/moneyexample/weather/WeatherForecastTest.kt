@@ -11,6 +11,7 @@ class WeatherForecastTest {
   lateinit var satellite: Satellite
   lateinit var weatherForecast: WeatherForecast
   lateinit var recorder: WeatherRecorder
+  lateinit var formatter: WeatherFormatter
 
   @Before
   fun setUp() {
@@ -28,7 +29,7 @@ class WeatherForecastTest {
 
     recorder = mock(name = "MockRecorder")
 
-    val formatter = WeatherFormatter()
+    formatter = spy(WeatherFormatter())
     weatherForecast = WeatherForecast(satellite, recorder, formatter)
   }
 
@@ -56,5 +57,11 @@ class WeatherForecastTest {
       verify(recorder, times(1)).record(capture())
       assertThat(firstValue.description).isEqualTo("Weather is RAINY")
     }
+  }
+
+  @Test
+  fun recordCurrentWeather_assertFormatterCalled() {
+    weatherForecast.recordCurrentWeather(37.580006, -122.345106)
+    verify(formatter, times(1)).format(any())
   }
 }
