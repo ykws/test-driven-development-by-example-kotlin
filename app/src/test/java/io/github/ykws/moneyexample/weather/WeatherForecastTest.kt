@@ -15,16 +15,10 @@ class WeatherForecastTest {
 
   @Before
   fun setUp() {
-    satellite = mock(name = "MockSatellite")
-    whenever(satellite.getWeather(any(), any())).thenAnswer { invocation ->
-      val latitude = invocation.arguments[0] as Double
-      val longitude = invocation.arguments[1] as Double
-
-      if (latitude in 20.424086..45.550999 && longitude in 122.933872..153.980789) {
-        return@thenAnswer Weather.SUNNY
-      } else {
-        return@thenAnswer Weather.RAINY
-      }
+    satellite = mock(name = "MockSatellite") {
+      on { getWeather(any(), any()) } doReturn Weather.CLOUDY
+      on { getWeather(eq(37.580006), eq(-122.345106)) } doReturn Weather.SUNNY
+      on { getWeather(eq(37.792872), eq(-122.396915)) } doReturn Weather.RAINY
     }
 
     recorder = mock(name = "MockRecorder")
@@ -45,7 +39,7 @@ class WeatherForecastTest {
 
   @Test
   fun shouldBringUmbrella_givenBurlingame_returnTrue() {
-    val actual = weatherForecast.shouldBringUmbrella(37.580006, -122.345106)
+    val actual = weatherForecast.shouldBringUmbrella(37.792872, -122.396915)
     assertThat(actual).isTrue()
   }
 
@@ -55,7 +49,7 @@ class WeatherForecastTest {
 
     argumentCaptor<Record>().apply {
       verify(recorder, times(1)).record(capture())
-      assertThat(firstValue.description).isEqualTo("Weather is RAINY")
+      assertThat(firstValue.description).isEqualTo("Weather is SUNNY")
     }
   }
 
