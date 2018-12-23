@@ -6,15 +6,24 @@ import org.junit.Before
 import org.assertj.core.api.Assertions.*
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Test
+import org.mockito.Mock
+import org.mockito.MockitoAnnotations
+import org.mockito.Spy
 
 class WeatherForecastTest {
+  @Mock
   lateinit var satellite: Satellite
-  lateinit var weatherForecast: WeatherForecast
+  @Mock
   lateinit var recorder: WeatherRecorder
+  @Spy
   lateinit var formatter: WeatherFormatter
+
+  lateinit var weatherForecast: WeatherForecast
 
   @Before
   fun setUp() {
+    MockitoAnnotations.initMocks(this)
+
     satellite = mock(name = "MockSatellite") {
       on { getWeather(any(), any()) } doReturn Weather.CLOUDY
       on { getWeather(eq(37.580006), eq(-122.345106)) } doReturn Weather.SUNNY
