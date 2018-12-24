@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 28
+    testOptions.unitTests.includeAndroidResources = true
+
     defaultConfig {
         applicationId "io.github.ykws.moneyexample"
         minSdkVersion 28
@@ -30,6 +32,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.assertj:assertj-core:3.10.0'
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0'
+    testImplementation 'org.robolectric:robolectric:4.1'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }

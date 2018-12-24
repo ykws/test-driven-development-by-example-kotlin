@@ -1,13 +1,17 @@
 package io.github.ykws.moneyexample
 
 import org.assertj.core.api.Assertions.*
+
 import org.junit.After
 import org.junit.Before
-
-import org.junit.Assert.*
 import org.junit.Test
+import org.junit.runner.RunWith
+
+import org.robolectric.RobolectricTestRunner
+
 import java.lang.IllegalArgumentException
 
+@RunWith(RobolectricTestRunner::class)
 class InputCheckerTest {
   lateinit var target: InputChecker
 
@@ -26,9 +30,11 @@ class InputCheckerTest {
     assertThat(actual).isTrue()
   }
 
-  @Test(expected = IllegalArgumentException::class)
+  @Test
   fun isValid_givenNull_throwsIllegalArgumentException() {
-    target.isValid(null)
+    assertThatExceptionOfType(IllegalArgumentException::class.java)
+      .isThrownBy { target.isValid("") }
+      .withMessage("Cannot be blank")
   }
 
   @Test
